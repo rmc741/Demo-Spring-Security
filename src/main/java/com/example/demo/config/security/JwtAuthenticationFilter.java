@@ -12,6 +12,7 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 
+//Class para validamos a existencia de um JWT nas requisições, com ajuda do service
 public class JwtAuthenticationFilter extends GenericFilterBean {
 
     @Override

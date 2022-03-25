@@ -17,6 +17,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Collections;
 
+//Intercepta as requisições do login e tenta autenticar o usuario
 public class JwtLoginFilter extends AbstractAuthenticationProcessingFilter {
 
     public JwtLoginFilter(String url, AuthenticationManager manager) {
@@ -24,6 +25,8 @@ public class JwtLoginFilter extends AbstractAuthenticationProcessingFilter {
         setAuthenticationManager(manager);
     }
 
+
+    //Método para lidar com a tentiva de autenticação
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response)
             throws AuthenticationException, IOException {

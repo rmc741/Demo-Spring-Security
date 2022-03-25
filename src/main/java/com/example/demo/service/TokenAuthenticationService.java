@@ -33,6 +33,7 @@ public class TokenAuthenticationService {
         String token = request.getHeader(header);
 
         if(token != null){
+            //faz o parse do token
             String user = Jwts.parser().setSigningKey(key).parseClaimsJws(token.replace(type,"")).getBody().getSubject();
 
             if(user != null){

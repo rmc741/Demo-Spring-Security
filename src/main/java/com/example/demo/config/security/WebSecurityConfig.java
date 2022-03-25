@@ -20,13 +20,16 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     private final UserDetailsService userDetailsService;
 
     private static final String[] AUTH_WHITELIST = {
-            "/login",
             "/register/users/create"
     };
 
     //Configuration for AUTHENTICATION
     @Override
     protected void configure(AuthenticationManagerBuilder builder) throws Exception {
+        //cria uma conta default
+        builder.inMemoryAuthentication()
+                        .withUser("admin").password("{noop}password").roles("ADMIN");
+
         builder.userDetailsService(userDetailsService).passwordEncoder(new BCryptPasswordEncoder());
     }
 
@@ -35,10 +38,15 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity httpSecurity) throws Exception {
         httpSecurity.csrf().disable().authorizeRequests()
                 .antMatchers(AUTH_WHITELIST).permitAll()
+                .antMatchers(HttpMethod.POST , "/login").permitAll()
                 .anyRequest().authenticated()
                 .and()
+
+                // filtra requisiçõe do login
                 .addFilterBefore(new JwtLoginFilter("/login", authenticationManager()),
                         UsernamePasswordAuthenticationFilter.class)
+
+                //filtra outras requisições parar verificar a presença do JWT no header
                 .addFilterBefore(new JwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
     }
 
